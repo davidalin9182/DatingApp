@@ -28,15 +28,7 @@ namespace API
             services.AddSwaggerGen();
 
             // Example: Add CORS policy
-            services.AddCors(options =>
-            {
-                options.AddPolicy("AllowAll", builder =>
-                {
-                    builder.AllowAnyOrigin()
-                           .AllowAnyHeader()
-                           .AllowAnyMethod();
-                });
-            });
+            services.AddCors();
 
             // Example: Add DbContext, Identity, Authentication, etc.
             // services.AddDbContext<MyDbContext>(options => ...);
@@ -69,12 +61,11 @@ namespace API
 
             app.UseRouting();
 
-            // If using authentication/authorization
-            // app.UseAuthentication();
-            // app.UseAuthorization();
-
             // Use CORS if registered
-            ///app.UseCors("AllowAll");
+            app.UseCors(policy =>  policy.AllowAnyHeader() .AllowAnyMethod().WithOrigins("https://localhost:4200"));
+
+            app.UseAuthorization();
+            // app.UseAuthentication();
 
             // Typical endpoints mapping for controllers
             app.UseEndpoints(endpoints =>
