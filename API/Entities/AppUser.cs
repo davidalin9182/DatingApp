@@ -10,5 +10,7 @@ namespace API.Entities
         public int Id { get; set; } // needs to be Id or ID for EntityFramework core to recognize it as primary key
         public string UserName { get; set; } // Username property is case sensitive for asp.net core identity
         
+        public byte[] PasswordHash { get; set; }
+        public byte[] PasswordSalt { get; set; }
     }
 }

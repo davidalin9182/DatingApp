@@ -1,5 +1,12 @@
+using System.Text;
 using API.Data;
+using API.Extensions;
+using API.Interfaces;
+using API.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace API
 {
@@ -16,24 +23,23 @@ namespace API
         // Register services with the DI container here
         public void ConfigureServices(IServiceCollection services)
         {
-            // Add MVC / controllers
+            services.AddApplicationServices(Configuration);
             services.AddControllers();
-            services.AddDbContext<DataContext>(options =>
-            {
-                options.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
-            });
-
-           // Add Swagger
+            // .ConfigureApiBehaviorOptions(options =>
+            // {
+            //     options.InvalidModelStateResponseFactory = context =>
+            //     {
+            //         var errors = context.ModelState
+            //             .Where(e => e.Value.Errors.Count > 0)
+            //             .Select(e => new { Field = e.Key, Error = e.Value.Errors.First().ErrorMessage });
+            //         return new BadRequestObjectResult(errors);
+            //     };
+            // });
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
-
-            // Example: Add CORS policy
             services.AddCors();
+            services.AddIdentityServices(Configuration);
 
-            // Example: Add DbContext, Identity, Authentication, etc.
-            // services.AddDbContext<MyDbContext>(options => ...);
-            // services.AddAuthentication(...);
-            // services.AddScoped<IMyService, MyService>();
         }
 
         // Configure the HTTP request pipeline here
@@ -44,11 +50,11 @@ namespace API
                 app.UseDeveloperExceptionPage();
 
                 // Swagger UI in development
-                 app.UseSwagger();
-                 app.UseSwaggerUI(c => 
-                 {
-                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-                 });
+                app.UseSwagger();
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                });
             }
             /// else
             /// {
@@ -62,8 +68,8 @@ namespace API
             app.UseRouting();
 
             // Use CORS if registered
-            app.UseCors(policy =>  policy.AllowAnyHeader() .AllowAnyMethod().WithOrigins("https://localhost:4200"));
-
+            app.UseCors(policy => policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200"));
+            app.UseAuthentication();
             app.UseAuthorization();
             // app.UseAuthentication();
 
@@ -77,6 +83,12 @@ namespace API
                 //     name: "default",
                 //     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+              // Ensure database & tables exist
+            using (var scope = app.ApplicationServices.CreateScope())
+            {
+                var db = scope.ServiceProvider.GetRequiredService<DataContext>();
+                db.Database.EnsureCreated(); // <--- important
+            }
         }
     }
 }
