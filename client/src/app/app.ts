@@ -1,12 +1,16 @@
 import { HttpClient } from '@angular/common/http';
+import { Account } from './_services/account';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { catchError, of } from 'rxjs';
+import { Nav} from "./nav/nav";
+import { User } from './_models/user';
+
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, Nav],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
@@ -14,14 +18,17 @@ export class App implements OnInit {
   title = 'The Dating App';
 
   private http = inject(HttpClient);
+  private accountService = inject(Account);
 
-  // Signals for state management
+
   users = signal<any[]>([]);
   errorMessage = signal('');
   loading = signal(false);
 
+
   ngOnInit() {
     this.getUsers();
+    this.setcurrentUser();
   }
 
   getUsers() {
@@ -39,6 +46,11 @@ export class App implements OnInit {
       },
       complete: () => console.log('Request complete')
     });
+  }
+
+  setcurrentUser(){
+    const user: User = JSON.parse(localStorage.getItem('user')!);
+    this.accountService.setCurrentUser(user);
   }
 }
 
