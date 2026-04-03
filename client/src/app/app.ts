@@ -6,11 +6,12 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { catchError, of } from 'rxjs';
 import { Nav} from "./nav/nav";
 import { User } from './_models/user';
+import { Home } from "./home/home";
 
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Nav],
+  imports: [RouterOutlet, Nav, Home],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
@@ -27,11 +28,11 @@ export class App implements OnInit {
 
 
   ngOnInit() {
-    this.getUsers();
+    //this.getUsers();
     this.setcurrentUser();
   }
 
-  getUsers() {
+/*   getUsers() {
     this.loading.set(true);
 
     this.http.get<any[]>('https://localhost:5001/api/users').subscribe({
@@ -46,7 +47,7 @@ export class App implements OnInit {
       },
       complete: () => console.log('Request complete')
     });
-  }
+  } */
 
   setcurrentUser(){
     const user: User = JSON.parse(localStorage.getItem('user')!);
