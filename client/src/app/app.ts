@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Account } from './_services/account';
+import { AccountService } from './_services/account';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -7,11 +7,11 @@ import { catchError, of } from 'rxjs';
 import { Nav} from "./nav/nav";
 import { User } from './_models/user';
 import { Home } from "./home/home";
-
+import { NgxSonnerToaster, toast } from 'ngx-sonner';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Nav, Home],
+  imports: [RouterOutlet, Nav, Home, NgxSonnerToaster],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
@@ -19,7 +19,7 @@ export class App implements OnInit {
   title = 'The Dating App';
 
   private http = inject(HttpClient);
-  private accountService = inject(Account);
+  private accountService = inject(AccountService);
 
 
   users = signal<any[]>([]);
@@ -28,11 +28,11 @@ export class App implements OnInit {
 
 
   ngOnInit() {
-    //this.getUsers();
-    this.setcurrentUser();
+    this.getUsers();
+    this.setCurrentUser();
   }
 
-/*   getUsers() {
+   getUsers() {
     this.loading.set(true);
 
     this.http.get<any[]>('https://localhost:5001/api/users').subscribe({
@@ -47,10 +47,17 @@ export class App implements OnInit {
       },
       complete: () => console.log('Request complete')
     });
-  } */
+  } 
 
-  setcurrentUser(){
-    const user: User = JSON.parse(localStorage.getItem('user')!);
+  setCurrentUser() {
+    const userString = localStorage.getItem('user');
+
+    if (!userString) {
+      this.accountService.setCurrentUser(null);
+      return;
+    }
+
+    const user: User = JSON.parse(userString);
     this.accountService.setCurrentUser(user);
   }
 }

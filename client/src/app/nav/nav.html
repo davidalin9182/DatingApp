@@ -1,23 +1,23 @@
-<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+<!-- <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
     <div class="container">
-         <a class="navbar-brand" href="#">Dating App</a>
+         <a class="navbar-brand" routerLink="/">Dating App</a>
             @if(accountService.currentUser$ | async) {
                 <ul class="navbar-nav me-auto mb-2 mb-md-0" >
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Matches</a>  
+                        <a class="nav-link" routerLink="/members" routerLinkActive="active">Matches</a>  
                     </li>
                     <li class="nav-item"> 
-                        <a class="nav-link" href="#">Lists</a> 
+                        <a class="nav-link" routerLink="/lists" routerLinkActive="active">Lists</a> 
                     </li> 
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Messages</a>  
+                        <a class="nav-link" routerLink="/messages" routerLinkActive="active">Messages</a>  
                     </li>
                 </ul> 
                 <div ngbDropdown class="dropdown" >
                     <a class="dropdown-toggle text-light" ngbDropdownToggle>Welcome User</a>
                     <ul class="dropdown-menu mt-3" ngbDropdownMenu >
-                        <li ngbDropdownItem><a class="dropdown-item" href="#">Profile</a></li>
-                        <li ngbDropdownItem><a class="dropdown-item" href="#">Settings</a></li>
+                        <li ngbDropdownItem><a class="dropdown-item" routerLink="/profile">Profile</a></li>
+                        <li ngbDropdownItem><a class="dropdown-item" routerLink="/settings">Settings</a></li>
                         <li ngbDropdownItem><hr class="dropdown-divider"></li>
                         <li ngbDropdownItem><a class="dropdown-item" href="#" (click)="logout()">Logout</a></li>
                     </ul>
@@ -33,5 +33,61 @@
 
             }
     </div> 
-</nav>
+</nav> -->
+<nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" routerLink="/">Dating App</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarColor01">
+        @if(accountService.currentUser$ | async) {
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                <a class="nav-link" routerLink="/members" routerLinkActive="active">Matches</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" routerLink="/lists" routerLinkActive="active">Lists</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" routerLink="/messages" routerLinkActive="active">Messages</a>
+                </li>
+                <li class="nav-item dropdown">
+                <!-- <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a> -->
+                <!--<div class="dropdown-menu">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Separated link</a>
+                </div> -->
                 
+                <div ngbDropdown class="dropdown"  >
+                    <a class="nav-link dropdown-toggle" ngbDropdownToggle>
+                        Welcome {{ (accountService.currentUser$ | async)?.userName | titlecase }}
+                    </a>
+                    <ul class="dropdown-menu " ngbDropdownMenu  >
+                        <li ><a class="dropdown-item" routerLink="/profile">Profile</a></li>
+                        <li ><a class="dropdown-item" routerLink="/settings">Settings</a></li>
+                        <li ><hr class="dropdown-divider"></li>
+                        <li ><a class="dropdown-item" href="#" (click)="logout()">Logout</a></li>
+                    </ul>
+                </div>
+                </li>
+            </ul>
+        }
+        @else{
+            <form #loginForm="ngForm" class="d-flex" (ngSubmit)="login()" autocomplete="off">
+                <input name="username" [(ngModel)]="model.username" class="form-control me-2" type="text" placeholder="Username">
+                <input name="password" [(ngModel)]="model.password" class="form-control me-2" type="password" placeholder="Password">
+                <button class="btn btn-info my-2 my-sm-0" type="submit">Login</button> 
+            </form>            
+
+        }
+      <!-- <form class="d-flex">
+        <input class="form-control me-sm-2" type="search" placeholder="Search">
+        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+      </form> -->
+    </div>
+  </div>
+</nav>                

@@ -27,7 +27,9 @@
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/bootswatch/dist/cerulean/bootstrap.css",
               "src/styles.css"
+
             ]
           },
           "configurations": {
