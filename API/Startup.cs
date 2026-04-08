@@ -2,6 +2,7 @@ using System.Text;
 using API.Data;
 using API.Extensions;
 using API.Interfaces;
+using API.Middleware;
 using API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
@@ -45,7 +46,9 @@ namespace API
         // Configure the HTTP request pipeline here
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
+            app.UseMiddleware<ExceptionMiddleware>();
+            
+         /*    if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
 
@@ -55,7 +58,7 @@ namespace API
                 {
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
                 });
-            }
+            } */
             /// else
             /// {
             ///     app.UseExceptionHandler("/Home/Error");

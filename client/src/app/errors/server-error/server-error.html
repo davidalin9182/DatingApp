@@ -1,0 +1,16 @@
+<h4>Internal Server Error - refresh the page to make the error go away</h4>
+@if(error) {
+    <h5 class="text-danger">Error: {{ error.message }}</h5>
+    <p class="fw-bold">Not an angular error!!!</p>
+    <p>What to do next?</p>
+    <ol>
+        <li>Open the browser's developer tools (F12) to view the error details.</li>
+        <li>Inspect the network tab for any failed requests.</li>
+        <li>Examine the request url make sure it is correct.</li>
+        <li>Try to reproduce it in Postman or similar tool to see if it is a backend issue.</li>
+    </ol>
+    <p>Following is the stack trace,this is where your investigation should start:</p>
+    <code class="p-3" style="display: block; background-color: whitesmoke; text-align: left; white-space: pre-wrap;">
+    {{ error.details }}
+    </code>
+}
