@@ -1,1 +1,119 @@
-<p>member-detail works!</p>
+@if(member){
+  <div class="row">
+
+    <!-- LEFT PROFILE CARD -->
+    <div class="col-4">
+      <div class="card">
+
+        <img
+          [src]="member.photoUrl || './images/user.png'"
+          [alt]="member.knownAs"
+          class="card-img-top img-thumbnail"
+        >
+
+        <div class="card-body">
+          <div>
+            <h6>Location:</h6>
+            <p>{{member.city}}, {{member.country}}</p>
+          </div>
+
+          <div>
+            <h6>Age:</h6>
+            <p>{{member.age}}</p>
+          </div>
+
+          <div>
+            <h6>Member Since:</h6>
+            <p>{{member.created}}</p>
+          </div>
+
+          <div>
+            <h6>Last Active:</h6>
+            <p>{{member.lastActive}}</p>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <div class="btn-group d-flex">
+            <button class="btn btn-primary">Like</button>
+            <button class="btn btn-success">Message</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- RIGHT TABS -->
+    <div class="col-8">
+      <div class="card">
+        <div class="card-body">
+
+          <ul ngbNav #nav="ngbNav" class="nav-tabs nav-fill">
+
+            <li ngbNavItem>
+              <a ngbNavLink>About</a>
+              <ng-template ngbNavContent>
+                <h5>About</h5>
+                <p>{{ member.introduction }}</p>
+                <p>{{ member.lookingFor }}</p>
+              </ng-template>
+            </li>
+
+            <li ngbNavItem>
+              <a ngbNavLink>Interests</a>
+              <ng-template ngbNavContent>
+                <h5>Interests</h5>
+                <p>{{ member.interests }}</p>
+              </ng-template>
+            </li>
+
+           <!--  <li ngbNavItem>
+              <a ngbNavLink>Photos</a>
+              <ng-template ngbNavContent>
+                <div class="d-flex flex-wrap gap-2">
+                  <img
+                    *ngFor="let photo of member.photos"
+                    [src]="photo.url"
+                    class="img-fluid rounded"
+                    style="width: 120px; height: 120px; object-fit: cover;"
+                  />
+                </div>
+              </ng-template>
+            </li> -->
+            <li ngbNavItem>
+              <a ngbNavLink>Photos</a>
+              <ng-template ngbNavContent>
+            
+                <p-galleria [value]="galleryImages" [numVisible]="5" [circular]="true" [showItemNavigators]="true" [showThumbnails]="true"
+                  [containerStyle]="{ 'max-width': '500px' }">
+            
+                  <ng-template pTemplate="item" let-item>
+                    <img [src]="item.itemImageSrc" style="width: 100%; display: block;" />
+                  </ng-template>
+            
+                  <ng-template pTemplate="thumbnail" let-item>
+                    <img [src]="item.thumbnailImageSrc" style="width: 70px;" />
+                  </ng-template>
+            
+                </p-galleria>
+            
+              </ng-template>
+            </li>
+
+            <li ngbNavItem>
+              <a ngbNavLink>Messages</a>
+              <ng-template ngbNavContent>
+                <p>No messages yet.</p>
+              </ng-template>
+            </li>
+
+          </ul>
+
+          <div [ngbNavOutlet]="nav" class="mt-3"></div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+}

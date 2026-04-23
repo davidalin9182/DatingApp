@@ -1,0 +1,27 @@
+.img-thumbnail {
+    margin: 25px;
+    width: 85%;
+    height: 85%;
+}
+
+.card-body {
+    padding: 0 25px;
+}
+
+.card-footer {
+    padding: 10px 15px;
+    background-color: #fff;
+    border-top: none;
+}
+.nav-tabs .nav-link {
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.nav-tabs .nav-link.active {
+  background-color: #f8f9fa;
+}
+
+p-galleria {
+  display: block;
+}

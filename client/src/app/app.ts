@@ -8,6 +8,7 @@ import { Nav} from "./nav/nav";
 import { User } from './_models/user';
 import { Home } from "./home/home";
 import { NgxSonnerToaster, toast } from 'ngx-sonner';
+import { environment } from '../environments/environment.development';
 
 @Component({
   selector: 'app-root',
@@ -28,26 +29,11 @@ export class App implements OnInit {
 
 
   ngOnInit() {
-    this.getUsers();
+    
     this.setCurrentUser();
   }
 
-   getUsers() {
-    this.loading.set(true);
 
-    this.http.get<any[]>('https://localhost:5001/api/users').subscribe({
-      next: data => {
-        this.users.set(data);
-        this.loading.set(false);
-      },
-      error: err => {
-        console.error('HTTP error:', err);
-        this.errorMessage.set('Failed to load users');
-        this.loading.set(false);
-      },
-      complete: () => console.log('Request complete')
-    });
-  } 
 
   setCurrentUser() {
     const userString = localStorage.getItem('user');
